@@ -1,3 +1,5 @@
+
+# Using LoadTiff16
 import os
 '''os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"'''
@@ -25,7 +27,7 @@ default_param_filename = default_param_file.split("/")[-1]
 sys.path.append(default_param_dir)
 
 from default_params import DefaultParams
-from module_loadML import loadTiffFiles
+from module_loadML16 import loadTiffFiles16
 default_params = DefaultParams()
 
 #############
@@ -72,21 +74,45 @@ model.add(Activation('sigmoid'))
 # - X_test is numpy arrays containing all tiff data used for validation
 # - y_train is numpy arrays containing class labels for training, so 0/1 in this case (binary classification)
 # - y_test is numpy arrays containing class labels for training, so 0/1 in this case (binary classification)
-X_train,y_train,X_test,y_test = loadTiffFiles(default_params.train_subdirs,root_folder,train_rate,np_precision,img_mult_amt,-1)
+X_train,y_train,X_test,y_test = loadTiffFiles16(default_params.train_subdirs,root_folder,train_rate,np_precision,img_mult_amt,-1)
 print(X_train.shape)
+print(X_train.dtype)
 print(y_train.shape)
+print(y_train.dtype)
 print(X_test.shape)
+print(X_test.dtype)
 print(y_test.shape)
+print(y_test.dtype)
 
 # Very useful, prints the model to better visualize it
 print(model.summary())
+
+
+print(X_train.shape)
+print(X_train.dtype)
+print(y_train.shape)
+print(y_train.dtype)
+print(X_test.shape)
+print(X_test.dtype)
+print(y_test.shape)
+print(y_test.dtype)
 
 model.compile(loss='binary_crossentropy',
             optimizer='rmsprop',
             metrics=['accuracy'])
 
+print("After compiltion")
+print(X_train.shape)
+print(X_train.dtype)
+print(y_train.shape)
+print(y_train.dtype)
+print(X_test.shape)
+print(X_test.dtype)
+print(y_test.shape)
+print(y_test.dtype)
+
 # Start training
-hist1 = model.fit(X_train,y_train,
+model.fit(X_train,y_train,
                   validation_data=(X_test,y_test),
                   batch_size=num_batch,epochs=num_epochs,verbose=1)
 #rand_int = randrange(1000000000)
