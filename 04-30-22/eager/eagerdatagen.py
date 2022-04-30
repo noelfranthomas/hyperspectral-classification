@@ -7,8 +7,12 @@ Original file is located at
     https://colab.research.google.com/drive/1qEPcpFU0oAd7ANDxBeFX-8Ct675TubUA
 """
 
+import os
+'''os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"'''
+
 root_folder = '/home/noelt/projects/def-stys/shared/PBMC_DATA_JUL_2021'
-train_subdirs = [["CSFpos_MCI", "CSFpos_AD"], ["CSFneg_healthy"]] # [["CSFpos_MCI", "CSFpos_AD"], ["CSFneg_healthy"]]
+train_subdirs = [["CSFpos_MCI/tiff", "CSFpos_AD/tiff"], ["CSFneg_healthy/tiff"]] # [["CSFpos_MCI", "CSFpos_AD"], ["CSFneg_healthy"]]
 train_rate = 0.75
 
 import tensorflow as tf
