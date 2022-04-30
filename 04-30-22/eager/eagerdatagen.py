@@ -7,8 +7,8 @@ Original file is located at
     https://colab.research.google.com/drive/1qEPcpFU0oAd7ANDxBeFX-8Ct675TubUA
 """
 
-root_folder = '/content/drive/MyDrive/PBMC_DATA_JUL_2021/'
-train_subdirs = [["CSFpos_MCI_TIFF", "CSFpos_AD_TIFF"], ["CSFneg_healthy_TIFF"]] # [["CSFpos_MCI", "CSFpos_AD"], ["CSFneg_healthy"]]
+root_folder = '/home/noelt/projects/def-stys/shared/PBMC_DATA_JUL_2021'
+train_subdirs = [["CSFpos_MCI", "CSFpos_AD"], ["CSFneg_healthy"]] # [["CSFpos_MCI", "CSFpos_AD"], ["CSFneg_healthy"]]
 train_rate = 0.75
 
 import tensorflow as tf
