@@ -19,7 +19,7 @@ import sys
 modules_path = '/home/noelt/software/modules'
 sys.path.append(modules_path)
 
-from helper_modules import loadTiffs, getShuffledTiffs, parse_function, set_shape, performance
+from handleTiffModules import loadTiffs, getShuffledTiffs
 
 ## PARAMS
 
@@ -31,16 +31,17 @@ train_rate = 0.75
 img_width, img_height = 1024, 1024
 n_channels = 32
 batch_size = 1 # 32 is keras' default
+img_mult_amt = 1/4000
+buffer_size = 10
 
-input_shape = (img_height, img_width, n_channels)
-
+shape = [img_height, img_width, n_channels]
 
 # load TIFF files
 tiff_files, class_defs = loadTiffs(train_subdirs,root_folder,1/4000,-1)
 
 # Build model architecture
 model = Sequential(name='model')
-model.add(Conv2D(32, (3, 3), strides=(3,3), input_shape=input_shape))
+model.add(Conv2D(32, (3, 3), strides=(3,3), input_shape=shape))
 model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(3, 3)))
 
@@ -63,6 +64,40 @@ model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accurac
 
 partition = math.floor(len(tiff_files) * train_rate)
 
+def parse_function(t, l):
+
+  X = np.empty(shape)
+
+  tiff_path = t.numpy().decode('UTF-8')
+
+  imgTiff = Image.open(tiff_path, mode="r")
+
+  for j in range(n_channels): # This will go through all 32 color channels
+      try:
+        imgTiff.seek(j)
+      except TypeError:
+        # print('Blank image found')
+        continue # Skips loading blanks
+      X[:,:,j] = np.array(imgTiff, dtype=np.float16)*img_mult_amt 
+
+  return X, l
+
+@tf.function
+def set_shape(t,l):
+    t.set_shape(shape)
+    # tf.reshape(t, shape=[None, 1024, 1024, 32])
+    l.set_shape([])
+    return t, l
+
+AUTOTUNE = tf.data.AUTOTUNE
+
+def performance(ds):
+  ds = ds.cache()
+  ds = ds.shuffle(buffer_size=buffer_size)
+  ds = ds.batch(batch_size)
+  ds = ds.prefetch(buffer_size=AUTOTUNE)
+  return ds
+
 dataset = tf.data.Dataset.from_tensor_slices((tiff_files, class_defs)) # Create dataset
 dataset = dataset.map(lambda t, l: tf.py_function(parse_function, [t, l], [tf.float16, tf.int32])) # Map to numpy arrays
 dataset = dataset.map(set_shape) # Set shape
@@ -70,8 +105,6 @@ dataset = dataset.map(set_shape) # Set shape
 # Split
 train_ds = dataset.take(partition)
 val_ds = dataset.skip(partition)
-
-AUTOTUNE = tf.data.AUTOTUNE
 
 train_ds = performance(train_ds)
 val_ds = performance(val_ds)
