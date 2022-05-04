@@ -1,6 +1,7 @@
 # Colab file at
 #    https://colab.research.google.com/drive/1qEPcpFU0oAd7ANDxBeFX-8Ct675TubUA
 
+import sys
 if len(sys.argv) < 2:
   print("No model specified")
   exit(1)
@@ -13,7 +14,6 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import math
-import sys
 
 modules_path = '/home/noelt/software/modules'
 sys.path.append(modules_path)
