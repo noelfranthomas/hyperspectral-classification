@@ -21,14 +21,16 @@ sys.path.append(modules_path)
 # model_path = '/home/noelt/software/models/'
 # sys.path.append(model_path)
 
-import importlib
+############ ############ ############ ############ How to import model?
+path = '/home/noelt/software/models/' + sys.argv[1] + '.py'
 
-model_path = model_path + sys.argv[1]
-
-# The file gets executed upon import, as expected.
-model_getter = importlib.import_module(model_path)
+import importlib.util
+spec = importlib.util.spec_from_file_location(sys.argv[1], path)
+model_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(model_module)
 
 from handleTiffModules import loadTiffs, getShuffledTiffs
+############ ############ ############ ############ How to import model?
 
 
 ## PARAMS
@@ -59,7 +61,7 @@ def parse_function(t, l):
 
   imgTiff = Image.open(tiff_path, mode="r")
 
-  for j in range(n_channels): # This will go through all 32 color channels
+  for j in range(n_channels): # This will go through all channels
       try:
         imgTiff.seek(j)
       except TypeError:
@@ -93,9 +95,10 @@ dataset = dataset.map(set_shape) # Set shape
 train_ds = dataset.take(partition)
 val_ds = dataset.skip(partition)
 
+# Performance tuning
 train_ds = performance(train_ds)
 val_ds = performance(val_ds)
 
-model = model_getter(shape)
+model = model_module.model(shape)
 
 model.fit(train_ds, validation_data=val_ds, epochs=10)
