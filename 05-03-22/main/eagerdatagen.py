@@ -14,11 +14,15 @@ import sys
 modules_path = '/home/noelt/software/modules'
 sys.path.append(modules_path)
 
-model_path = '/home/noelt/software/model'
+if len(sys.argv) < 2:
+  print("No model specified")
+  exit(1)
+
+model_path = '/home/noelt/software/models/'
 sys.path.append(model_path)
 
 from handleTiffModules import loadTiffs, getShuffledTiffs
-from CNN_model import model
+from sys.argv[1] import model
 
 ## PARAMS
 
