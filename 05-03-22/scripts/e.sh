@@ -10,7 +10,7 @@ source /home/noelt/software/nvenv/bin/activate # IMPORTANT: needs to be set
 
 start=`date +%s`
 
-python ./eagerdatagen.py
+python ./eagerdatagen.py CNN_modelv1
 
 end=`date +%s`
 runtime=$((end-start))

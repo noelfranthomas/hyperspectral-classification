@@ -1,6 +1,10 @@
 # Colab file at
 #    https://colab.research.google.com/drive/1qEPcpFU0oAd7ANDxBeFX-8Ct675TubUA
 
+if len(sys.argv) < 2:
+  print("No model specified")
+  exit(1)
+
 import os
 '''os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"'''
@@ -13,10 +17,6 @@ import sys
 
 modules_path = '/home/noelt/software/modules'
 sys.path.append(modules_path)
-
-if len(sys.argv) < 2:
-  print("No model specified")
-  exit(1)
 
 model_path = '/home/noelt/software/models/'
 sys.path.append(model_path)
