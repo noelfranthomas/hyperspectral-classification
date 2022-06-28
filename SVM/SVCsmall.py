@@ -21,8 +21,8 @@ train_data = pd.read_csv(root + train_f) # Load training data
 
 train_data.drop(columns='intensity', inplace=True) # Drop intensity
 
-_head = train_data.head(750000) # Reduce size (N = 250,000, t = 3505s)
-_tail = train_data.tail(750000)
+_head = train_data.head(250000) # Reduce size (N = 250,000, t = 3505s)
+_tail = train_data.tail(250000)
 _frames = [_head, _tail]
 train_data = pd.concat(_frames)
 
