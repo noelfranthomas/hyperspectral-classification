@@ -1,0 +1,26 @@
+import numpy as np
+import pandas as pd
+
+from sklearn.svm import SVC
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+from snapml import SupportVectorMachine
+
+X, y = make_classification(n_samples=nSamples, n_features=20, n_informative=17, n_redundant=3, random_state=5)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=.2, random_state=5)
+
+
+gamma_val = 1 / (20 * X.var()) # 20 is the number of features
+
+model_snap = SupportVectorMachine(kernel='rbf', gamma=gamma_val, max_iter=100)
+model = SVC(kernel ="rbf", gamma=gamma_val, max_iter=100)
+print("Running SVM Classifier with SnapML without GPU...")
+model_snap.fit(X_train, y_train)
+model.fit(X_train, y_train)
+
+
+print(type(X))
+
+print("snapML: " + str(model_snap.score(X_test, y_test)))
+print("skLearn: " + str(model.score(X_test, y_test)))

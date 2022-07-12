@@ -1,0 +1,70 @@
+ON REMOTE (ComputeCanada)
+
+0. Request interactive resources:
+
+`salloc --time=1:0:0 --gres=gpu:1`
+
+1. Check that the Python version is compatible with ipython:
+
+`python --version`
+
+2. If it is less than 3.8, it will not load the latest ipython package (fails
+to install jupyter notebook).
+
+`module load python/3.8` --> Or, whichever version desired.
+
+3. Create virtual environment.
+
+`python -m venv jupytervenv`
+
+4. Activate environment
+
+`source jupytervenv/bin/activate`
+
+5. Install Jupyter dependencies.
+
+`pip install noteboook`
+
+6. Run notebook server.
+
+`jupyter notebook --no-browser --port=XXXX`
+
+E.g. `jupyter notebook --no-browser --port=8000`
+
+NOTE: Port can be selected according to preference.
+
+LOCAL:
+
+7. Listen to remote port via SSH.
+
+`ssh -L YYYY:localhost:XXXX <remoteuser>@<remotehost>`
+
+E.g. `ssh -L 8000:localhost:8000 noelt@graham.computecanada.ca`
+
+Note: Port numbers can be the same since they are ports on different machines.
+
+8. Use notebook server URL to view in local browser. When the server is started
+on the remote, it produces a URL that follows this pattern:
+
+"http://127.0.0.1:8000/?token=????"
+
+E.g. 
+"http://127.0.0.1:8000/?token=498dc05915535346f423adcaa2aa74cacee0c0016358fdd3"
+NOTE: This URL is only an example 
+
+Paste the URL into the browser.
+
+9. Kernel should be running on remote.
+
+To properly clean up, use the soft kill command on the remote server, or press
+quit in the browser interface.
+
+Other:
+
+In case something is running on the port you want to use, just run `sudo lsof 
+-i :3000` to find process ID. Then, kill it using `kill -9 <PID>`.
+
+Sometimes, the server can return "channel 3: open failed: connect failed: 
+Connection refused". In this case, the server may be busy. Try waiting 30s.
+If the issue persists run 
+`ssh -L 8000:localhost:8000 noelt@graham.computecanada.ca` again
