@@ -2,11 +2,10 @@
 Machine learning and statistical analysis for hyperspectral classification.
 
 ## Objective
-Build ThunderSVM on CC network.
+FE via CNN to improve SVM accuracy
 
-## Method(s)
-1. Build environment off-site, transfer onto HPC network with singularity container.
-2. Build adapter for ThunderSVM to use installed CUDA module version.
+### July 19
+Building CNN for FE
 
 ### July 14 
 Following method 1:
