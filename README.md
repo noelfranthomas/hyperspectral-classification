@@ -2,11 +2,11 @@
 Machine learning and statistical analysis for hyperspectral classification.
 
 ## Objective
-Improve model accuracy.
+Improve model accuracy for real-word ops.
 
 ## Tasks
-Feature selection
-Feature extraction
-Applying SVC
+1. Feature selection
+2. Feature extraction
+3. Applying SVC
 
 ### August 1
